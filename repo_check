@@ -1,0 +1,61 @@
+#!/usr/bin/python2.6
+
+import os
+from subprocess import Popen, PIPE, STDOUT
+
+
+GIT_STATUS_OK_RETURNCODE = 1
+GIT_STATUS_OK_OUTPUT = '''# On branch master
+nothing to commit (working directory clean)
+'''
+
+
+def iter_repos(repo_path):
+    for dirname in os.listdir(repo_path):
+        if os.path.isdir(os.path.join(repo_path, dirname, '.git')):
+            yield dirname
+
+
+def check_repo_status(repo_path, repo_name):
+    git_status = Popen(
+        args = ('git', 'status'),
+        stdout = PIPE,
+        stderr = STDOUT,
+        cwd = os.path.join(repo_path, repo_name),
+        )
+
+    print 'Checking', repo_name
+
+    rc = git_status.wait()
+    output = git_status.stdout.read()
+
+    if (rc != GIT_STATUS_OK_RETURNCODE) or (output != GIT_STATUS_OK_OUTPUT):
+        print '\n', output
+        return False
+
+    return True
+
+
+def main():
+    repo_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
+                                             os.pardir))
+    not_ok = []
+
+    for repo_name in iter_repos(repo_path):
+        if not check_repo_status(repo_path, repo_name):
+            not_ok.append(repo_name)
+
+    print
+
+    if not not_ok:
+        print 'Everything looks OK'
+    else:
+        print 'The following repositories should be inspected:', '\n'
+        for repo_name in not_ok:
+            print repo_name
+
+    print
+
+
+if __name__ == '__main__':
+    main()
