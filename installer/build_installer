@@ -1,0 +1,78 @@
+#!/usr/bin/python
+
+import os
+from subprocess import check_call
+
+
+installer_root = '/tmp/mw_installer'
+
+package_contents = {
+
+    'Core':
+        {
+        'copy':
+            (
+            '/Applications/MWClient.app',
+            '/Applications/MWEditor.app',
+            '/Applications/MWServer.app',
+            '/Library/Application Support/MonkeyWorks/Configuration/examples',
+            '/Library/Application Support/MonkeyWorks/Plugins',
+            '/Library/Frameworks/MonkeyWorksCocoa.framework',
+            '/Library/Frameworks/MonkeyWorksCore.framework',
+            ),
+        'create':
+            (
+            '/Documents/MonkeyWorks/Data',
+            '/Library/Application Support/MonkeyWorks/Experiment Cache',
+            ),
+        },
+
+    'Developer':
+        (
+        '/Library/Application Support/MonkeyWorks/Developer',
+        ),
+
+    'Examples':
+        (
+        '/Documents/MonkeyWorks/Examples',
+        ),
+
+    'Scripting':
+        (
+        '/Library/Application Support/MonkeyWorks/Scripting',
+        ),
+
+    'Tools':
+        (
+        '/Library/Application Support/MonkeyWorks/Tools',
+        ),
+
+    }
+
+
+def make_destdir(package, path):
+    destdir = os.path.join(installer_root, package, path[1:])
+    check_call(['mkdir', '-p', destdir])
+    return destdir
+
+
+def copy_path(package, path):
+    destdir = make_destdir(package, path)
+    check_call(['cp', '-R', path + '/', destdir])
+
+
+def main():
+    check_call(['rm', '-Rf', installer_root])
+
+    for package, contents in package_contents.iteritems():
+        if isinstance(contents, dict):
+            for path in contents['create']:
+                make_destdir(package, path)
+            contents = contents['copy']
+
+        for path in contents:
+            copy_path(package, path)
+
+
+if __name__ == '__main__':
+    main()
