@@ -2,9 +2,13 @@
 
 import os
 from subprocess import check_call
+import sys
 
 
+packagemaker = ('/Developer/Applications/Utilities/PackageMaker.app/Contents/'
+                'MacOS/PackageMaker')
 installer_root = '/tmp/mw_installer'
+
 
 package_contents = {
 
@@ -62,6 +66,8 @@ def copy_path(package, path):
 
 
 def main():
+    output_file = sys.argv[1]
+
     check_call(['rm', '-Rf', installer_root])
 
     for package, contents in package_contents.iteritems():
@@ -72,6 +78,10 @@ def main():
 
         for path in contents:
             copy_path(package, path)
+
+    check_call([packagemaker,
+                '--doc', 'MWorksInstaller.pmdoc',
+                '--out', output_file])
 
 
 if __name__ == '__main__':
