@@ -11,7 +11,7 @@ mw_files = (
     '/Applications/MWClient.app',
     '/Applications/MWEditor.app',
     '/Applications/MWServer.app',
-    '/Documents/MonkeyWorks',
+    '/Documents/MonkeyWorks/Examples',
     '/Library/Application Support/MonkeyWorks',
     '/Library/Application Support/NewClient',
     '/Library/Frameworks/MonkeyWorksCocoa.framework',
