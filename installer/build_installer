@@ -66,30 +66,38 @@ def copy_path(package, path):
 
 
 def main():
-    version = sys.argv[1]
+    package_name = 'MWorks'
+    package_version = sys.argv[1]
 
     check_call(['rm', '-Rf', installer_root])
 
-    for package, contents in package_contents.iteritems():
+    for contents in package_contents.itervalues():
         if isinstance(contents, dict):
             for path in contents['create']:
-                make_destdir(package, path)
+                make_destdir(package_name, path)
             contents = contents['copy']
 
         for path in contents:
-            copy_path(package, path)
+            copy_path(package_name, path)
 
-    dmg_contents_dir = os.path.join(installer_root, 'MWorks ' + version)
+    dmg_contents_dir = os.path.join(installer_root,
+                                    '%s %s' % (package_name, package_version))
     check_call(['mkdir', dmg_contents_dir])
 
     check_call([packagemaker,
-                '--doc', 'MWorksInstaller.pmdoc',
-                '--out', os.path.join(dmg_contents_dir, 'MWorks.pkg')])
+                '--root', os.path.join(installer_root, package_name),
+                '--id', 'org.mworks-project.pkg.' + package_name,
+                '--out', os.path.join(dmg_contents_dir, package_name + '.pkg'),
+                '--title', package_name,
+                '--target', '10.5',
+                '--root-volume-only',
+                ])
 
     check_call(['cp', 'uninstall_mworks',
                 os.path.join(dmg_contents_dir, 'Uninstall MWorks')])
 
-    output_file = os.path.join(installer_root, 'MWorks-%s.dmg' % version)
+    output_file = os.path.join(installer_root,
+                               '%s-%s.dmg' % (package_name, package_version))
     check_call(['hdiutil', 'create', '-quiet', '-srcfolder', dmg_contents_dir,
                 output_file])
 
