@@ -89,7 +89,8 @@ def main():
                 '--id', 'org.mworks-project.pkg.' + package_name,
                 '--out', os.path.join(dmg_contents_dir, package_name + '.pkg'),
                 '--title', package_name,
-                '--target', '10.5',
+                '--scripts', 'scripts',
+                '--target', '10.4',
                 '--root-volume-only',
                 ])
 
