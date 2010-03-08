@@ -2,6 +2,7 @@
 
 from optparse import OptionParser
 import os
+import pwd
 from subprocess import check_call
 import sys
 import time
@@ -42,16 +43,24 @@ def backup_files(filelist, backupdir):
     for filename in filelist:
         if os.path.exists(filename):
             destdir = os.path.join(backupdir, os.path.dirname(filename[1:]))
-            sys.stderr.write('Moving "%s" to "%s"\n' % (filename, backupdir))
+            sys.stdout.write('Moving "%s" to "%s"\n' % (filename, backupdir))
             check_call(['mkdir', '-p', destdir])
             check_call(['mv', filename, destdir])
+
+    # If the effective user is different from USER (e.g. the installer
+    # is calling this script as root), give USER ownership of the
+    # backup directory
+    if os.path.exists(backupdir):
+        username = os.environ['USER']
+        if os.geteuid() != pwd.getpwnam(username)[2]:
+            check_call(['chown', '-R', username, backupdir])
 
 
 def restore_files(filelist, backupdir):
     for filename in filelist:
         srcfile = os.path.join(backupdir, filename[1:])
         if os.path.exists(srcfile):
-            sys.stderr.write('Restoring "%s" from "%s"\n' %
+            sys.stdout.write('Restoring "%s" from "%s"\n' %
                              (filename, backupdir))
             check_call(['mv', srcfile, os.path.dirname(filename)])
 
