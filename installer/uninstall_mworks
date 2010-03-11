@@ -52,12 +52,11 @@ def backup_files(filelist, backupdir):
             check_call(['mkdir', '-p', destdir])
             check_call(['mv', filename, destdir])
 
-    # If the effective user is different from USER (e.g. the installer
-    # is calling this script as root), give USER ownership of the
-    # backup directory
+    # Make sure the backup directory has the same owner as its parent
     if os.path.exists(backupdir):
-        username = os.environ['USER']
-        if os.geteuid() != pwd.getpwnam(username)[2]:
+        expected_uid = os.stat(os.path.dirname(backupdir))[4]
+        if os.geteuid() != expected_uid:
+            username = pwd.getpwuid(expected_uid)[0]
             check_call(['chown', '-R', username, backupdir])
 
 
