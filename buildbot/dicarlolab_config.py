@@ -3,6 +3,7 @@
 
 project_url = 'http://github.com/dicarlolab-mworks'
 buildbot_hostname = 'dicarlo-mwdev.mit.edu'
+buildbot_admin = 'Christopher Stawarz <cstawarz@mit.edu>'
 webstatus_port = 8010
 
 from slave_pass import slave_pass
