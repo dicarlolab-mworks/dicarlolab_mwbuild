@@ -10,6 +10,8 @@ function get_config
 }
 
 
+./check_config_files || exit
+
 SLAVEDIR=~/.buildbot_slave
 
 MASTER_HOST=$(get_config buildbot_hostname)
