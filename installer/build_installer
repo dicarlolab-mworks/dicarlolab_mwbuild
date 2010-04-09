@@ -19,36 +19,36 @@ package_contents = {
             '/Applications/MWClient.app',
             '/Applications/MWEditor.app',
             '/Applications/MWServer.app',
-            '/Library/Application Support/MonkeyWorks/Configuration/examples',
-            '/Library/Application Support/MonkeyWorks/Plugins',
-            '/Library/Frameworks/MonkeyWorksCocoa.framework',
-            '/Library/Frameworks/MonkeyWorksCore.framework',
+            '/Library/Application Support/MWorks/Configuration/examples',
+            '/Library/Application Support/MWorks/Plugins',
+            '/Library/Frameworks/MWorksCocoa.framework',
+            '/Library/Frameworks/MWorksCore.framework',
             ),
         'create':
             (
-            '/Documents/MonkeyWorks/Data',
-            '/Library/Application Support/MonkeyWorks/Experiment Cache',
+            '/Documents/MWorks/Data',
+            '/Library/Application Support/MWorks/Experiment Cache',
             ),
         },
 
     'Developer':
         (
-        '/Library/Application Support/MonkeyWorks/Developer',
+        '/Library/Application Support/MWorks/Developer',
         ),
 
     'Examples':
         (
-        '/Documents/MonkeyWorks/Examples',
+        '/Documents/MWorks/Examples',
         ),
 
     'Scripting':
         (
-        '/Library/Application Support/MonkeyWorks/Scripting',
+        '/Library/Application Support/MWorks/Scripting',
         ),
 
     'Tools':
         (
-        '/Library/Application Support/MonkeyWorks/Tools',
+        '/Library/Application Support/MWorks/Tools',
         ),
 
     }
