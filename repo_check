@@ -9,10 +9,16 @@ GIT_STATUS_OK_OUTPUT = '''# On branch master
 nothing to commit (working directory clean)
 '''
 
+ignored_repos = (
+    'dicarlolab_mwsuite',
+    'mw_suite',
+    )
+
 
 def iter_repos(repo_path):
     for dirname in os.listdir(repo_path):
-        if os.path.isdir(os.path.join(repo_path, dirname, '.git')):
+        if ((dirname not in ignored_repos) and
+            os.path.isdir(os.path.join(repo_path, dirname, '.git'))):
             yield dirname
 
 
